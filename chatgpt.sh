@@ -16,6 +16,11 @@ while [[ $# -gt 0 ]]; do
       shift
       shift
       ;;
+    -n)
+      N_COMPLETIONS="$2"
+      shift
+      shift
+      ;;
     -t|--temperature)
       TEMPERATURE="$2"
       shift
@@ -34,6 +39,8 @@ done
 
 set -- "${POSITIONAL_ARGS[@]}"
 
+USER_MD5=$(echo "$USER" | md5sum | cut -f1 -d" ")
+
 curl https://api.openai.com/v1/completions \
   -s \
   -H 'Content-Type: application/json' \
@@ -42,5 +49,7 @@ curl https://api.openai.com/v1/completions \
   "model": "'"$MODEL"'",
   "prompt": "'"$1"'",
   "max_tokens": '"$MAX_TOKENS"',
-  "temperature": '"$TEMPERATURE"'
-}' | jq -r ".choices[0].text"
+  "n": '"$N_COMPLETIONS"',
+  "temperature": '"$TEMPERATURE"',
+  "user": "'"$USER_MD5"'"
+}' | jq -r ".choices[].text"
