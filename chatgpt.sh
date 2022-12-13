@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # shellcheck disable=SC2046
 export $(grep -v '^#' .env | xargs)
 
@@ -9,5 +11,5 @@ curl https://api.openai.com/v1/completions \
   "model": "'"$MODEL"'",
   "prompt": "'"$1"'",
   "max_tokens": '"$MAX_TOKENS"',
-  "temperature": 0.3
+  "temperature": '"$TEMPERATURE"'
 }' | jq -r ".choices[0].text"
