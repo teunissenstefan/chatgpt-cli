@@ -1,7 +1,15 @@
 #!/usr/bin/env bash
 
+SOURCE=${BASH_SOURCE[0]}
+while [ -L "$SOURCE" ]; do
+  DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
+  SOURCE=$(readlink "$SOURCE")
+  [[ $SOURCE != /* ]] && SOURCE=$DIR/$SOURCE
+done
+DIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
+
 # shellcheck disable=SC2046
-export $(grep -v '^#' .env | xargs)
+export $(grep -v '^#' "${DIR}/.env" | xargs)
 
 POSITIONAL_ARGS=()
 while [[ $# -gt 0 ]]; do
