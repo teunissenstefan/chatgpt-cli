@@ -18,4 +18,6 @@ if [ ! -f "${DIR}/.env" ]; then
   sed -i -e "s/OPENAI_API_KEY=/OPENAI_API_KEY=$API_KEY/g" "${DIR}/.env"
 fi
 
+sudo pandoc -s -t man "${DIR}/man/chatgpt.1.md" -o /usr/local/man/man1/chatgpt.1
+
 echo "Installation complete"

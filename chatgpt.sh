@@ -49,13 +49,21 @@ set -- "${POSITIONAL_ARGS[@]}"
 
 USER_MD5=$(echo "$USER" | md5sum | cut -f1 -d" ")
 
+if [ "$#" -gt 0 ]; then
+  INPUT="$1"
+else
+  read -d '' INPUT
+fi
+
+INPUT=${INPUT//$'\n'/' '}
+
 curl https://api.openai.com/v1/completions \
   -s \
   -H 'Content-Type: application/json' \
   -H "Authorization: Bearer ${OPENAI_API_KEY}" \
   -d '{
   "model": "'"$MODEL"'",
-  "prompt": "'"$1"'",
+  "prompt": "'"$INPUT"'",
   "max_tokens": '"$MAX_TOKENS"',
   "n": '"$N_COMPLETIONS"',
   "temperature": '"$TEMPERATURE"',
