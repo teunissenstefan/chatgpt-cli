@@ -16,3 +16,6 @@ cd chatgpt-cli
 chmod +x ./install.sh
 ./install.sh
 ```
+
+# Special Thanks
+ - ChatGPT for making this script possible
